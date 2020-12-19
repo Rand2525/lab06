@@ -21,8 +21,12 @@ public class TerminalKlienta {
     private String dodatkoweUwagi;
     private String status;
     private String dataGodzinaPrzyjazdu;
+    private int numerKlienta;
 
     public TerminalKlienta() throws IOException {
+
+
+
         File plik = new File("listaZgloszen.txt");
         Writer zapis = new BufferedWriter(new FileWriter("listaZgloszen.txt",true));
         statusZgloszeniaTextField.setEditable(false);
@@ -41,7 +45,8 @@ public class TerminalKlienta {
                     dodatkoweUwagi=dodatkoweUwagiTextField.getText();
                     status="oczekujace";
                     statusZgloszeniaTextField.setText("Oczekujace");
-                    Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
+                    numerKlienta=Integer.parseInt(numerKlientaTextField.getText());
+                    Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,numerKlienta,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
 
                     try {
                         zapis.append(zgloszenie.toString() + "\n");
@@ -52,7 +57,8 @@ public class TerminalKlienta {
                     //wyslanie do centrali
                     new NadawcaKlient().send(zgloszenie.toString());
                 }
-
+                OdbiorcaKlient odbiorcaKlient = new OdbiorcaKlient(statusZgloszeniaTextField,numerKlienta);
+                odbiorcaKlient.start();
             }
 
         });

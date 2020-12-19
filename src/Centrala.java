@@ -22,21 +22,41 @@ public class Centrala {
     private String status;
     private String dodatkoweUwagi;
     private int numerZgloszenia;
-
-
-
+    private int numerKlienta;
+    private List<Taksowkarz> taksowkarzList = new ArrayList<>();
+    private String [] daneTaksowkarza;
     private static List<Zgloszenie> listaZgloszen = new ArrayList<>();
-    private List<Taksowkarz> listaTAXI = new ArrayList<>();
+
 
     public static void dodajZgloszenie(Zgloszenie zgloszenie)
     {
         listaZgloszen.add(zgloszenie);
     }
 
+    public void odczytajTaxi() throws FileNotFoundException {
+        taksowkarzList=new ArrayList<>();
+        Scanner odczytTaxi = new Scanner(new File("taksowkarze.txt"));
+        while (odczytTaxi.hasNextLine())
+        {
+            try {
+                daneTaksowkarza=odczytTaxi.nextLine().split(";");
+                Taksowkarz taksowkarz = new Taksowkarz(daneTaksowkarza[0],daneTaksowkarza[1],Integer.parseInt(daneTaksowkarza[2]),daneTaksowkarza[3]);
+                taksowkarzList.add(taksowkarz);
+
+            }
+            catch (NoSuchElementException exception)
+            {
+
+            }
+        }
+    }
+
     public Centrala() throws FileNotFoundException {
         zgloszenieJText.setEditable(false);
         OdbiorcaCentrala odbiorcaCentrala = new OdbiorcaCentrala(zgloszenieJText);
         odbiorcaCentrala.start();
+
+
 
         Scanner odczyt = new Scanner(new File("listaZgloszen.txt"));
 
@@ -58,25 +78,31 @@ public class Centrala {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 numerZgloszenia=0;
+                try {
+                    odczytajTaxi();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 while (odczyt.hasNextLine())
                 {
                     try {
 
                         daneZgloszenia=odczyt.nextLine().split(";");
-
-                        adresPoczatkowy=daneZgloszenia[0];
-                        adresKoncowy=daneZgloszenia[1];
-                        dataGodzinaPrzyjazdu=daneZgloszenia[2];
-                        status=daneZgloszenia[3];
-                        dodatkoweUwagi=daneZgloszenia[4];
-                        Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
+                        numerZgloszenia=Integer.parseInt(daneZgloszenia[0]);
+                        numerKlienta=Integer.parseInt(daneZgloszenia[1]);
+                        adresPoczatkowy=daneZgloszenia[2];
+                        adresKoncowy=daneZgloszenia[3];
+                        dataGodzinaPrzyjazdu=daneZgloszenia[4];
+                        status=daneZgloszenia[5];
+                        dodatkoweUwagi=daneZgloszenia[6];
+                        Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,numerKlienta,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
                         listaZgloszen.add(zgloszenie);
                         numerZgloszenia++;
-                        System.out.print(" " + daneZgloszenia [0]);
-                        System.out.print(" " + daneZgloszenia [1]);
-                        System.out.print(" " + daneZgloszenia [2]);
-                        System.out.print(" " + daneZgloszenia [3]);
-                        System.out.println(" " + daneZgloszenia [4]);
+//                        System.out.print(" " + daneZgloszenia [0]);
+//                        System.out.print(" " + daneZgloszenia [1]);
+//                        System.out.print(" " + daneZgloszenia [2]);
+//                        System.out.print(" " + daneZgloszenia [3]);
+//                        System.out.println(" " + daneZgloszenia [4]);
 
                     }catch (NoSuchElementException e)
                     {
@@ -85,7 +111,7 @@ public class Centrala {
 
                 }
                 JFrame baza = new JFrame("Baza");
-                baza.setContentPane(new Baza(baza,listaZgloszen).getPanelGlowny());
+                baza.setContentPane(new Baza(baza,listaZgloszen,taksowkarzList).getPanelGlowny());
                 baza.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 baza.setBounds(600,300,600,300);
                 baza.setVisible(true);

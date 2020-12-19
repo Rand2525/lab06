@@ -26,7 +26,6 @@ public class TerminalTaksowkarza {
         for(Taksowkarz taksowkarz : taksowkarzList)
         {
             try {
-                System.out.println(taksowkarz.toString());
                 zapis.append(taksowkarz.toString() + "\n");
 
             } catch (IOException e) {
@@ -81,7 +80,7 @@ public class TerminalTaksowkarza {
             return taksowkarz;
     }
 
-    public TerminalTaksowkarza() throws FileNotFoundException {
+    public TerminalTaksowkarza(JFrame terminal) throws FileNotFoundException {
         zakonczPraceButton.setVisible(false);
         zrealizujZgloszenieButton.setVisible(false);
         zgloszenieTextField.setVisible(false);
@@ -150,13 +149,12 @@ public class TerminalTaksowkarza {
                         e.printStackTrace();
                     }
                     wyszukajTaksowkarza(numer).setStatus("Nie pracuje");
-//                    taksowkarz.setStatus("Nie pracuje");
-                    System.out.println(taksowkarz.toString());
                     try {
                         zapisz();
                     } catch (IOException exception) {
                         exception.printStackTrace();
                     }
+                    terminal.dispose();
                 }
             }
         });
@@ -173,8 +171,8 @@ public class TerminalTaksowkarza {
     public static void main(String[] args) throws FileNotFoundException {
 
         JFrame terminal = new JFrame("TAXI");
-        terminal.setContentPane(new TerminalTaksowkarza().panelGlowny);
-        terminal.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        terminal.setContentPane(new TerminalTaksowkarza(terminal).panelGlowny);
+        terminal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         terminal.setBounds(600,300,600,300);
         terminal.setVisible(true);
     }

@@ -34,4 +34,16 @@ public class Taksowkarz {
     public int getNumerTaxi() {
         return numerTaxi;
     }
+
+    public String getImie() {
+        return imie;
+    }
+
+    public String getNazwisko() {
+        return nazwisko;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }

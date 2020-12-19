@@ -6,19 +6,21 @@ public class Zgloszenie {
     private String dataGodzinaPrzyjazdu;
     private String status;
     private String dodatkoweUwagi;
+    private int numerKlienta;
 
-    public Zgloszenie( int numerZgloszenia,String adresPoczatkowy, String adresKoncowy, String dataGodzinaPrzyjazdu,String status, String dodatkoweUwagi) {
+    public Zgloszenie( int numerZgloszenia,int numerKlienta,String adresPoczatkowy, String adresKoncowy, String dataGodzinaPrzyjazdu,String status, String dodatkoweUwagi) {
         this.adresPoczatkowy = adresPoczatkowy;
         this.adresKoncowy = adresKoncowy;
         this.numerZgloszenia = numerZgloszenia;
         this.dataGodzinaPrzyjazdu = dataGodzinaPrzyjazdu;
         this.dodatkoweUwagi=dodatkoweUwagi;
         this.status=status;
+        this.numerKlienta=numerKlienta;
     }
 
     @Override
     public String toString() {
-        return adresPoczatkowy + ";" + adresKoncowy + ";" + dataGodzinaPrzyjazdu + ";" + status + ";" + dodatkoweUwagi;
+        return numerZgloszenia + ";" + numerKlienta + ";" + adresPoczatkowy + ";" + adresKoncowy + ";" + dataGodzinaPrzyjazdu + ";" + status + ";" + dodatkoweUwagi;
     }
 
     public void przyjmijZgloszenie() {
@@ -50,5 +52,9 @@ public class Zgloszenie {
 
     public String getDodatkoweUwagi() {
         return dodatkoweUwagi;
+    }
+
+    public int getNumerKlienta() {
+        return numerKlienta;
     }
 }

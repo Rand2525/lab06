@@ -25,6 +25,10 @@ public class TaxiTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
+        if (col == 0) return listaTaxi.get(row).getImie();
+        if (col == 1) return listaTaxi.get(row).getNazwisko();
+        if (col == 2) return listaTaxi.get(row).getNumerTaxi();
+        if (col == 3) return listaTaxi.get(row).getStatus();
         return null;
     }
 }
