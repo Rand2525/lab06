@@ -6,14 +6,16 @@ public class Taksowkarz {
     private String status = "Nie pracuje";
 
 
-    public Taksowkarz(String imie, String nazwisko) {
+    public Taksowkarz(String imie, String nazwisko,int numerTaxi,String status) {
         this.imie = imie;
         this.nazwisko = nazwisko;
+        this.numerTaxi=numerTaxi;
+        this.status=status;
     }
 
     @Override
     public String toString() {
-        return imie + " " + nazwisko + " " + numerTaxi + " " + status;
+        return imie + ";" + nazwisko + ";" + numerTaxi + ";" + status;
     }
 
     public void setStatus(String status) {
@@ -27,5 +29,9 @@ public class Taksowkarz {
     public void odrzucZgloszenie(Zgloszenie zgloszenie)
     {
 
+    }
+
+    public int getNumerTaxi() {
+        return numerTaxi;
     }
 }

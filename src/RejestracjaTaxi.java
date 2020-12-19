@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class RejestracjaTaxi {
     private JPanel panelGlowny;
@@ -10,13 +13,33 @@ public class RejestracjaTaxi {
     private JButton cofnijButton;
     private String imie;
     private String nazwisko;
-    private int NumerBoczny;
+    private int ostatniNumerTaxi=1025;
 
     public JPanel getPanelGlowny() {
         return panelGlowny;
     }
 
-    public RejestracjaTaxi(JFrame rejestracja) {
+    public RejestracjaTaxi(JFrame rejestracja) throws IOException {
+
+        Writer zapis = new BufferedWriter(new FileWriter("taksowkarze.txt", true));
+        Scanner odczytTaxi = new Scanner(new File("taksowkarze.txt"));
+
+        while (odczytTaxi.hasNextLine())
+        {
+
+            try {
+                odczytTaxi.nextLine();
+                ostatniNumerTaxi++;
+            }
+            catch (NoSuchElementException exception)
+            {
+
+            }
+
+
+
+        }
+
         cofnijButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -30,8 +53,16 @@ public class RejestracjaTaxi {
                     JOptionPane.showMessageDialog(null,"Wypelnij wszystkie pola!");
                 else
                 {
-                    Taksowkarz taksowkarz = new Taksowkarz(imie,nazwisko);
-                    JOptionPane.showMessageDialog(null,"Twoj numer boczny to " + NumerBoczny);
+                    try {
+                        zapis.append(imieTextField.getText() + ";" + nazwiskoTextField.getText()+";"+ostatniNumerTaxi+";Nie pracuje\n");
+                        zapis.close();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+
+                    Taksowkarz taksowkarz = new Taksowkarz(imie,nazwisko,ostatniNumerTaxi,"Nie pracuje");
+                    JOptionPane.showMessageDialog(null,"Twoj numer TAXI to " + ostatniNumerTaxi);
+                    rejestracja.dispose();
                 }
             }
         });

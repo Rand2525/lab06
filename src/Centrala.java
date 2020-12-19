@@ -14,6 +14,7 @@ public class Centrala {
     private JButton zarejestrujTAXIButton;
     private JButton pokazBazeButton;
     private JPanel panelGlowny;
+    private JButton zarejestrujKlientaButton;
     private String adresPoczatkowy;
     private String adresKoncowy;
     private String[] daneZgloszenia;
@@ -25,7 +26,7 @@ public class Centrala {
 
 
     private static List<Zgloszenie> listaZgloszen = new ArrayList<>();
-    private List<Taksowkarz> listaTAXI;
+    private List<Taksowkarz> listaTAXI = new ArrayList<>();
 
     public static void dodajZgloszenie(Zgloszenie zgloszenie)
     {
@@ -43,7 +44,11 @@ public class Centrala {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JFrame rejestracja = new JFrame("Rejestracja TAXI");
-                rejestracja.setContentPane(new RejestracjaTaxi(rejestracja).getPanelGlowny());
+                try {
+                    rejestracja.setContentPane(new RejestracjaTaxi(rejestracja).getPanelGlowny());
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
                 rejestracja.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 rejestracja.setBounds(600,300,600,300);
                 rejestracja.setVisible(true);
@@ -84,6 +89,21 @@ public class Centrala {
                 baza.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 baza.setBounds(600,300,600,300);
                 baza.setVisible(true);
+            }
+        });
+        zarejestrujKlientaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFrame rejestracjaKlienta = new JFrame("Rejestracja Klienta");
+                try {
+                    rejestracjaKlienta.setContentPane(new RejestracjaKlientow(rejestracjaKlienta).getPanelGlowny());
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+                rejestracjaKlienta.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                rejestracjaKlienta.setBounds(600,300,600,300);
+                rejestracjaKlienta.setVisible(true);
+
             }
         });
     }
