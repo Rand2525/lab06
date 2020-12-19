@@ -1,3 +1,4 @@
-Poludniowa 8;Zielna 4;15:00;oczekujace;platnosc karta
-Sienna 4;Polna 20;16:35;oczekujace;brak
-Wiejska 17;Otwarta 3;13:00;oczekujace;podroz z psem
+Adam;Nowak;1025;Wolny
+Jan;Kowalski;1026;Nie pracuje
+xafawfAdam;Nowak;1025;Wolny
+Jan;Kowalski;1026;Nie pracuje

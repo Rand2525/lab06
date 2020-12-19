@@ -16,24 +16,26 @@ public class TerminalTaksowkarza {
     private JLabel numerLabel;
     private JTextField zgloszenieTextField;
     private int numer;
-    private boolean zgloszenie=true;
+    private boolean zgloszenie=false;
     private Taksowkarz taksowkarz;
     private List<Taksowkarz> taksowkarzList = new ArrayList<>();
     private String[] daneTaksowkarza;
 
     public void zapisz() throws IOException {
-//        Writer zapis = new BufferedWriter(new FileWriter("listaZgloszen.txt",true));
-//        zapis.flush();
-//        for(Taksowkarz taksowkarz : taksowkarzList)
-//        {
-//            try {
-//                zapis.append(taksowkarz.toString() + "\n");
-//                zapis.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        Writer zapis = new BufferedWriter(new FileWriter("taksowkarze.txt",false));
+        for(Taksowkarz taksowkarz : taksowkarzList)
+        {
+            try {
+                System.out.println(taksowkarz.toString());
+                zapis.append(taksowkarz.toString() + "\n");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        zapis.close();
     }
+
     public void odczytaj() throws FileNotFoundException {
         taksowkarzList=new ArrayList<>();
         Scanner odczytTaxi = new Scanner(new File("taksowkarze.txt"));
@@ -41,10 +43,6 @@ public class TerminalTaksowkarza {
         {
             try {
                 daneTaksowkarza=odczytTaxi.nextLine().split(";");
-                System.out.println(daneTaksowkarza[0]);
-                System.out.println(daneTaksowkarza[1]);
-                System.out.println(daneTaksowkarza[2]);
-                System.out.println(daneTaksowkarza[3]);
                 Taksowkarz taksowkarz = new Taksowkarz(daneTaksowkarza[0],daneTaksowkarza[1],Integer.parseInt(daneTaksowkarza[2]),daneTaksowkarza[3]);
                 taksowkarzList.add(taksowkarz);
 
@@ -73,14 +71,14 @@ public class TerminalTaksowkarza {
         }
         return isTaksowkarz;
     }
-    public void wyszukajTaksowkarza(int numer)
+    public Taksowkarz wyszukajTaksowkarza(int numer)
     {
         for(Taksowkarz taksowkarz : taksowkarzList)
         {
             if(taksowkarz.getNumerTaxi()==numer)
                 this.taksowkarz=taksowkarz;
         }
-
+            return taksowkarz;
     }
 
     public TerminalTaksowkarza() throws FileNotFoundException {
@@ -116,10 +114,11 @@ public class TerminalTaksowkarza {
                         numerLabel.setText("TAXI " + numer);
                         wyszukajTaksowkarza(numer);
                         //Przed kazdym zapisaniem do pliku powinienem go jescze raz odczytac zeby nie nadpisac zmian z innych aplikacji
-//                        odczytaj();
-                        taksowkarz.setStatus("Wolny");
-                        zapisz();
+                        odczytaj();
+                          wyszukajTaksowkarza(numer).setStatus("Wolny");
+                          zapisz();
                         JOptionPane.showMessageDialog(null,"Zalogowano");
+
                     }
 
                 }catch (NumberFormatException | FileNotFoundException exception)
@@ -141,9 +140,23 @@ public class TerminalTaksowkarza {
 //                    taksowkarz=null;
                     zakonczPraceButton.setVisible(false);
                     zrealizujZgloszenieButton.setVisible(false);
+                    zgloszenieTextField.setVisible(false);
                     zalogujButton.setVisible(true);
                     numerTextField.setVisible(true);
-                    taksowkarz.setStatus("Nie pracuje");
+
+                    try {
+                        odczytaj();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    wyszukajTaksowkarza(numer).setStatus("Nie pracuje");
+//                    taksowkarz.setStatus("Nie pracuje");
+                    System.out.println(taksowkarz.toString());
+                    try {
+                        zapisz();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         });
