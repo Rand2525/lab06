@@ -10,6 +10,7 @@ public class NadawcaCentrala {
         Socket s;
         try {
             s = new Socket("localhost",port);
+            System.out.println("Wyslano do " + port);
             OutputStream out = s.getOutputStream();
             PrintWriter pw = new PrintWriter(out, false);
             pw.println(message);

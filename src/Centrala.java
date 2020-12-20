@@ -58,7 +58,7 @@ public class Centrala {
 
 
 
-        Scanner odczyt = new Scanner(new File("listaZgloszen.txt"));
+
 
         zarejestrujTAXIButton.addActionListener(new ActionListener() {
             @Override
@@ -77,43 +77,73 @@ public class Centrala {
         pokazBazeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 numerZgloszenia=0;
                 try {
                     odczytajTaxi();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                while (odczyt.hasNextLine())
-                {
+                Scanner odczyt = null;
+                try {
+                    odczyt = new Scanner(new File("listaZgloszen.txt"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                listaZgloszen= new ArrayList<>();
+                while (odczyt.hasNextLine()) {
                     try {
-
-                        daneZgloszenia=odczyt.nextLine().split(";");
-                        numerZgloszenia=Integer.parseInt(daneZgloszenia[0]);
-                        numerKlienta=Integer.parseInt(daneZgloszenia[1]);
-                        adresPoczatkowy=daneZgloszenia[2];
-                        adresKoncowy=daneZgloszenia[3];
-                        dataGodzinaPrzyjazdu=daneZgloszenia[4];
-                        status=daneZgloszenia[5];
-                        dodatkoweUwagi=daneZgloszenia[6];
-                        Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,numerKlienta,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
-                        listaZgloszen.add(zgloszenie);
+                        daneZgloszenia = odczyt.nextLine().split(";");
+//                        numerZgloszenia=Integer.parseInt(daneZgloszenia[0]);
                         numerZgloszenia++;
+                        numerKlienta = Integer.parseInt(daneZgloszenia[1]);
+                        adresPoczatkowy = daneZgloszenia[2];
+                        adresKoncowy = daneZgloszenia[3];
+                        dataGodzinaPrzyjazdu = daneZgloszenia[4];
+                        status = daneZgloszenia[5];
+                        dodatkoweUwagi = daneZgloszenia[6];
+                        Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia, numerKlienta, adresPoczatkowy, adresKoncowy, dataGodzinaPrzyjazdu, status, dodatkoweUwagi);
+//                        System.out.println(zgloszenie);
+                        listaZgloszen.add(zgloszenie);
 //                        System.out.print(" " + daneZgloszenia [0]);
 //                        System.out.print(" " + daneZgloszenia [1]);
 //                        System.out.print(" " + daneZgloszenia [2]);
 //                        System.out.print(" " + daneZgloszenia [3]);
 //                        System.out.println(" " + daneZgloszenia [4]);
 
-                    }catch (NoSuchElementException e)
-                    {
+                    } catch (NoSuchElementException e) {
 
                     }
-
                 }
+                    Scanner odczytZrealizowanych= null;
+                    try {
+                        odczytZrealizowanych = new Scanner(new File("zrealizowane zgloszenia.txt"));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    numerZgloszenia=0;
+                    int zrealizowaneZgloszenie;
+                    while (odczytZrealizowanych.hasNextLine())
+                    {
+                        try {
+                            zrealizowaneZgloszenie=Integer.parseInt(odczytZrealizowanych.nextLine());
+                            for(Zgloszenie zgloszenie : listaZgloszen)
+                            {
+                                if(zgloszenie.getNumerZgloszenia()==zrealizowaneZgloszenie)
+                                    zgloszenie.setStatus("Zrealizowane");
+                            }
+
+                        }
+                        catch (NoSuchElementException exception)
+                        {
+
+                        }
+                    }
+
                 JFrame baza = new JFrame("Baza");
                 baza.setContentPane(new Baza(baza,listaZgloszen,taksowkarzList).getPanelGlowny());
                 baza.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                baza.setBounds(600,300,600,300);
+                baza.setBounds(600,300,700,300);
                 baza.setVisible(true);
             }
         });

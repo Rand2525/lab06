@@ -45,6 +45,7 @@ public class TerminalKlienta {
                     dodatkoweUwagi=dodatkoweUwagiTextField.getText();
                     status="oczekujace";
                     statusZgloszeniaTextField.setText("Oczekujace");
+                    zamowTAXIButton.setVisible(false);
                     numerKlienta=Integer.parseInt(numerKlientaTextField.getText());
                     Zgloszenie zgloszenie = new Zgloszenie(numerZgloszenia,numerKlienta,adresPoczatkowy,adresKoncowy,dataGodzinaPrzyjazdu,status,dodatkoweUwagi);
 
@@ -57,8 +58,8 @@ public class TerminalKlienta {
                     //wyslanie do centrali
                     new NadawcaKlient().send(zgloszenie.toString());
                 }
-                OdbiorcaKlient odbiorcaKlient = new OdbiorcaKlient(statusZgloszeniaTextField,numerKlienta);
-                odbiorcaKlient.start();
+                OdbiorcaTerminal odbiorcaTerminal = new OdbiorcaTerminal(statusZgloszeniaTextField,numerKlienta);
+                odbiorcaTerminal.start();
             }
 
         });

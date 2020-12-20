@@ -117,6 +117,7 @@ public class TerminalTaksowkarza {
                           wyszukajTaksowkarza(numer).setStatus("Wolny");
                           zapisz();
                         JOptionPane.showMessageDialog(null,"Zalogowano");
+                          terminal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
                     }
 
@@ -127,17 +128,17 @@ public class TerminalTaksowkarza {
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
+                OdbiorcaTerminal odbiorcaTerminal = new OdbiorcaTerminal(zgloszenieTextField,numer);
+                odbiorcaTerminal.start();
             }
         });
         zakonczPraceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(zgloszenie==true)
+                if(!zgloszenieTextField.getText().equals("Brak zgloszenia"))
                     JOptionPane.showMessageDialog(null,"Nie zakonczono zgloszenia!");
                 else
                 {
-//                    taksowkarz=null;
-                    zakonczPraceButton.setVisible(false);
                     zrealizujZgloszenieButton.setVisible(false);
                     zgloszenieTextField.setVisible(false);
                     zalogujButton.setVisible(true);
@@ -163,8 +164,42 @@ public class TerminalTaksowkarza {
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null,"Zrealizowano zgłoszenie");
                 zgloszenie=false;
+                int numerZgloszenia = Integer.parseInt(zgloszenieTextField.getText().substring(0,zgloszenieTextField.getText().indexOf(";")));
                 zgloszenieTextField.setText("Brak zgloszenia");
+                Writer zapisZgloszen = null;
+                try {
+                    zapisZgloszen = new BufferedWriter(new FileWriter("zrealizowane zgloszenia.txt",true));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
+                    try {
+                        zapisZgloszen.append(String.valueOf(numerZgloszenia) + "\n" );
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+
+                }
+                try {
+                    zapisZgloszen.close();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
+                //odczytanie przed zapisem
+                try {
+                    odczytaj();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                wyszukajTaksowkarza(numer).setStatus("Wolny");
+                try {
+                    zapisz();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
             }
+
         });
     }
 
@@ -172,7 +207,7 @@ public class TerminalTaksowkarza {
 
         JFrame terminal = new JFrame("TAXI");
         terminal.setContentPane(new TerminalTaksowkarza(terminal).panelGlowny);
-        terminal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        terminal.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         terminal.setBounds(600,300,600,300);
         terminal.setVisible(true);
     }

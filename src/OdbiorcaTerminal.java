@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class OdbiorcaKlient {
+public class OdbiorcaTerminal {
 
     private final int port;
     private Thread t = null;
@@ -15,7 +15,7 @@ public class OdbiorcaKlient {
     private boolean end = false;
     private JTextField statusZgloszeniaJText;
 
-    public OdbiorcaKlient(JTextField statusZgloszeniaJText,int port) {
+    public OdbiorcaTerminal(JTextField statusZgloszeniaJText,int port) {
         this.statusZgloszeniaJText=statusZgloszeniaJText;
         this.port=port;
     }

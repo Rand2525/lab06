@@ -57,4 +57,8 @@ public class Zgloszenie {
     public int getNumerKlienta() {
         return numerKlienta;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

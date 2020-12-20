@@ -1,1 +1,3 @@
-0;1202;Polna;Zielna;14:00;oczekujace;brak
+1;1201;Polna 4;Kwiatowa 14;14:00;W trakcie;brak
+2;1205;Kwiatowa 14;Wiejska 40;12:30;W trakcie;brak
+3;1206;Wiejska 18;Kwiatowa 5;14:00;W trakcie;Platnosc karta
